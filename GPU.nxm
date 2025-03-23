@@ -1,0 +1,57 @@
+//
+// GPU.nx
+//
+// Created by Anonym on 23.03.25
+//
+ 
+include("ui");
+
+function fillBox(display, startX, startY, width, height, colorIndex) {
+	for (let x = startX + 1; x < startX + width; x++) {
+		for (let y = startY + 1; y < startY + height; y++) {
+			display.setPixel(x, y, colorIndex);
+		}
+	}
+}
+
+function drawBox(display, startX, startY, width, height, colorIndex) {
+    // Draw top and bottom edges
+    for (let x = startX; x < startX + width; x++) {
+        display.setPixel(x, startY, colorIndex); // Top edge
+        display.setPixel(x, startY + height - 1, colorIndex); // Bottom edge
+    }
+
+    // Draw left and right edges
+    for (let y = startY; y < startY + height; y++) {
+        display.setPixel(startX, y, colorIndex); // Left edge
+        display.setPixel(startX + width - 1, y, colorIndex); // Right edge
+    }
+}
+
+function drawLine(display, x1, y1, x2, y2, colorIndex) {
+    let dx = Math.abs(x2 - x1);
+    let dy = Math.abs(y2 - y1);
+    let sx = (x1 < x2) ? 1 : -1;
+    let sy = (y1 < y2) ? 1 : -1;
+    let err = dx - dy;
+
+    while (true) {
+        display.setPixel(x1, y1, colorIndex); // Set pixel at current position
+        if (x1 === x2 && y1 === y2) break; // If the line has reached the end point, stop drawing
+        let e2 = err * 2;
+        if (e2 > -dy) { 
+            err -= dy;
+            x1 += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y1 += sy;
+        }
+    }
+}
+
+return {
+	fillBox: fillBox,
+	drawLine: drawLine,
+	drawBox: drawBox
+};
