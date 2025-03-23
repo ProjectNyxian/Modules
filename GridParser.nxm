@@ -1,0 +1,71 @@
+//
+// GridParser.nx
+//
+// Created by Anonym on 23.03.25
+//
+ 
+/* EXAMPLE USAGE
+include("ui");
+include("timer");
+include("../DisplayKit/GridParser");
+
+let uirep = ui.uiReport();
+
+let width = 80;
+let heigth = 80;
+
+let display = ui.spawnDisplay(width, heigth);
+
+//GridParser:
+const a = display.storeGraph(GridParser.parse(`
+  ##    ##
+ #  #  #  #
+#    ##    #
+#          #
+#          #
+ #        #
+ #        #
+  #      #
+   #    #
+    #  #
+     ##
+`, 1));
+
+//Previously:
+const b = display.storeGraph([
+[0,0,15],
+[1,0,15],
+[2,0,1],
+]);
+
+display.drawGraph(a, 2, 5);
+display.drawGraph(a, 2, 20);
+display.drawGraph(b, 10, 2);
+display.redraw();
+display.unstoreGraph(a);
+display.unstoreGraph(b);
+
+timer.wait(5);
+
+ui.destroy(display);
+*/
+
+function parse(inputString, colorIndex) {
+    const result = [];
+    const rows = inputString.split('\n'); // No .trim()
+
+    for (let y = 0; y < rows.length; y++) {
+        const row = rows[y];
+        for (let x = 0; x < row.length; x++) {
+            if (row[x] === '#') {
+                result.push([x, y, colorIndex]);
+            }
+        }
+    }
+
+    return result;
+}
+
+return {
+	parse:parse
+}
